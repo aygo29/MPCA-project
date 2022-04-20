@@ -13,6 +13,7 @@ int distance; // variable for the distance measurement
 
 // constants won't change
 const int RELAY_PIN = A5;  // the Arduino pin, which connects to the IN pin of relay
+int lock_state = 0;
 
 void buzzer_fun()
 {
@@ -93,9 +94,18 @@ void loop()
   {
     Serial.println("Authorized access");
     Serial.println();
-    digitalWrite(RELAY_PIN, LOW); //locks
-    delay(5000);
-    digitalWrite(RELAY_PIN, HIGH);
+    if (lock_state == 0)
+    {
+      digitalWrite(RELAY_PIN, LOW);
+      lock_state = 1;
+      return;
+    }
+    if (lock_state == 1)
+    {
+      digitalWrite(RELAY_PIN, HIGH);
+      lock_state = 0;
+      return;
+    }
   }
   else   
   {
