@@ -4,7 +4,7 @@ The Door Lock Security System acts as a Smart Door Lock with the help of multipl
 
 ## Smart Door Lock
 
-![alt text](https://github.com/aygo29/MPCA-project/blob/master/smart_door_lock_circuit.jpg?raw=true)
+![Circuit](https://github.com/aygo29/MPCA-project/blob/master/smart_door_lock_circuit.jpeg?raw=true)
 
 ### Parts used
 
