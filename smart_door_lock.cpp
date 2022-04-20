@@ -1,21 +1,12 @@
-/*
-
-   All the resources for this project: https://www.hackster.io/Aritro
-   Modified by Aritro Mukherjee
-
-
-*/
-
 #include <SPI.h>
 #include <MFRC522.h>
-
 #define SS_PIN 10
 #define RST_PIN 9
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
 
 // constants won't change
 const int RELAY_PIN = A5;  // the Arduino pin, which connects to the IN pin of relay
-
+int lock_flag = 0;
 void setup()
 {
   Serial.begin(9600);   // Initiate a serial communication
@@ -26,6 +17,7 @@ void setup()
 
   pinMode(RELAY_PIN, OUTPUT);
 }
+
 void loop()
 {
   // Look for new cards
@@ -56,14 +48,23 @@ void loop()
   {
     Serial.println("Authorized access");
     Serial.println();
-    digitalWrite(RELAY_PIN, LOW); // uhlock the door
-    delay(2000);
+    if (lock_flag == 0)
+    {
+      digitalWrite(RELAY_PIN, LOW); //locks
+      lock_flag = 1;
+      delay(2500);
+    }
+    if (lock_flag == 1)
+    {
+      digitalWrite(RELAY_PIN, HIGH); //unlocks
+      lock_flag = 0;
+      delay(2500);
+    }
   }
 
   else   
   {
     Serial.println(" Access denied");
-    digitalWrite(RELAY_PIN, HIGH);  // lock the door
     delay(2000);
   }
 }
