@@ -6,20 +6,20 @@ The Door Lock Security System acts as a Smart Door Lock with the help of multipl
 
 ### Parts used
 
-Arduino Uno R3
-RFID Reader
-Solenoid Lock
-Relay Module
-12V AC Adapter
-Ultrasonic Sensor
-Buzzer
+Arduino Uno R3\
+RFID Reader\
+Solenoid Lock\
+Relay Module\
+12V AC Adapter\
+Ultrasonic Sensor\
+Buzzer\
 
 ## Telegram Camera Bot
 
 ### Parts used
 
-Arduino Uno R3
-ESP32 Cam
-9V Battery
+Arduino Uno R3\
+ESP32 Cam\
+9V Battery\
 
 
