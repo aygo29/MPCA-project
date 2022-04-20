@@ -4,9 +4,25 @@
 #define RST_PIN 9
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
 
+int buzzer = 8 ;
+#define echoPin 2 // attach pin D2 Arduino to pin Echo of HC-SR04
+#define trigPin 3 //attach pin D3 Arduino to pin Trig of HC-SR04
+// defines variables
+long duration; // variable for the duration of sound wave travel
+int distance; // variable for the distance measurement
+
 // constants won't change
 const int RELAY_PIN = A5;  // the Arduino pin, which connects to the IN pin of relay
-int lock_flag = 0;
+
+void buzzer_fun()
+{
+    digitalWrite (buzzer, LOW) ; //send tone
+    delay (500) ;
+    //  remove below code for continuous tone
+    digitalWrite (buzzer, HIGH) ; //no tone
+    delay (500) ;  
+}
+
 void setup()
 {
   Serial.begin(9600);   // Initiate a serial communication
@@ -14,12 +30,41 @@ void setup()
   mfrc522.PCD_Init();   // Initiate MFRC522
   Serial.println("Approximate your card to the reader...");
   Serial.println();
-
   pinMode(RELAY_PIN, OUTPUT);
+  
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
+  pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
+  pinMode (buzzer, OUTPUT) ;//buzzer code
+  digitalWrite(buzzer, HIGH);
+  
+  Serial.begin(9600); // // Serial Communication is starting with 9600 of baudrate speed
+  Serial.println("Ultrasonic Sensor HC-SR04 Test"); // print some text in Serial Monitor
+  Serial.println("with Arduino UNO R3");
 }
 
 void loop()
 {
+  // Clears the trigPin condition
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(echoPin, HIGH);
+  // Calculating the distance
+  distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+  // Displays the distance on the Serial Monitor
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  if(distance<20)
+  {
+    buzzer_fun();
+  }
+  delay(500);
+  
   // Look for new cards
   if ( ! mfrc522.PICC_IsNewCardPresent())
   {
@@ -48,20 +93,10 @@ void loop()
   {
     Serial.println("Authorized access");
     Serial.println();
-    if (lock_flag == 0)
-    {
-      digitalWrite(RELAY_PIN, LOW); //locks
-      lock_flag = 1;
-      delay(2500);
-    }
-    if (lock_flag == 1)
-    {
-      digitalWrite(RELAY_PIN, HIGH); //unlocks
-      lock_flag = 0;
-      delay(2500);
-    }
+    digitalWrite(RELAY_PIN, LOW); //locks
+    delay(5000);
+    digitalWrite(RELAY_PIN, HIGH);
   }
-
   else   
   {
     Serial.println(" Access denied");
