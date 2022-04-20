@@ -14,6 +14,7 @@ int distance; // variable for the distance measurement
 // constants won't change
 const int RELAY_PIN = A5;  // the Arduino pin, which connects to the IN pin of relay
 int lock_state = 0;
+int buzzer_mode;
 
 void buzzer_fun()
 {
@@ -43,6 +44,20 @@ void setup()
   Serial.println("with Arduino UNO R3");
 }
 
+void buzzer_fast()
+{
+    digitalWrite (buzzer, LOW) ; //send tone
+    delay (200) ;
+    //  remove below code for continuous tone
+    digitalWrite (buzzer, HIGH) ; //no tone
+    delay (200) ;
+    digitalWrite (buzzer, LOW) ; //send tone
+    delay (200) ;
+    //  remove below code for continuous tone
+    digitalWrite (buzzer, HIGH) ; //no tone
+    delay (200) ;
+}
+
 void loop()
 {
   // Clears the trigPin condition
@@ -62,7 +77,10 @@ void loop()
   Serial.println(" cm");
   if(distance<20)
   {
-    buzzer_fun();
+    if (buzzer_mode == 0)
+      buzzer_fun();
+    if (buzzer_mode == 1)
+      buzzer_fast();
   }
   delay(500);
   
@@ -93,6 +111,8 @@ void loop()
   if (content.substring(1) == "77 11 EE F4") //change here the UID of the card/cards that you want to give access
   {
     Serial.println("Authorized access");
+    buzzer_fast();
+    buzzer_mode = 2;
     Serial.println();
     if (lock_state == 0)
     {
@@ -110,6 +130,7 @@ void loop()
   else   
   {
     Serial.println(" Access denied");
+    buzzer_mode = 1;
     delay(2000);
   }
 }
