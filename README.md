@@ -12,7 +12,7 @@ Solenoid Lock\
 Relay Module\
 12V AC Adapter\
 Ultrasonic Sensor\
-Buzzer\
+Buzzer
 
 ## Telegram Camera Bot
 
@@ -20,6 +20,6 @@ Buzzer\
 
 Arduino Uno R3\
 ESP32 Cam\
-9V Battery\
+9V Battery
 
 
